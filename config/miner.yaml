@@ -1,10 +1,10 @@
 # ─────────────────────────────────────────────────────────────────────────
-# DRAFT — design artifact only. Not registered. Not hosted anywhere yet.
-# `id` below is a self-chosen arbitrary integer (per telegraph-docs, this is
-# ours to pick, not issued by Telegraph — it's just used in API paths like
-# /engine/v1/ask/{id} once we're live). `base_url` is a placeholder until
-# Phase 2 deployment gives us a real HTTPS domain.
-# Schema verified against telegraph-docs/miners/yaml-config.md (Phase 0).
+# Production registration config. `id` below is a self-chosen arbitrary
+# integer (per telegraph-docs, this is ours to pick, not issued by
+# Telegraph — it's just used in API paths like /engine/v1/ask/{id} once
+# live). `base_url` points at the deployed, verified Render instance.
+# Schema re-verified against telegraph-docs/miners/yaml-config.md (fresh
+# fetch, unchanged from Phase 0/1).
 # ─────────────────────────────────────────────────────────────────────────
 
 version: "1"
@@ -19,7 +19,7 @@ description: >
   analysis to produce a deterministic safe/suspicious/malicious verdict.
   No single upstream provider's downtime fully blocks a verdict.
 
-base_url: https://REPLACE_WITH_REAL_DEPLOYMENT_DOMAIN
+base_url: https://telegraph-url-scan-miner.onrender.com
 
 auth:
   type: none
