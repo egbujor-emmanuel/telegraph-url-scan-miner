@@ -1,0 +1,67 @@
+# ─────────────────────────────────────────────────────────────────────────
+# DRAFT — design artifact only. Not registered. Not hosted anywhere yet.
+# `id` below is a self-chosen arbitrary integer (per telegraph-docs, this is
+# ours to pick, not issued by Telegraph — it's just used in API paths like
+# /engine/v1/ask/{id} once we're live). `base_url` is a placeholder until
+# Phase 2 deployment gives us a real HTTPS domain.
+# Schema verified against telegraph-docs/miners/yaml-config.md (Phase 0).
+# ─────────────────────────────────────────────────────────────────────────
+
+version: "1"
+kind: miner
+id: 5001
+slug: url-sentinel
+protocol: generic
+name: URL Sentinel
+description: >
+  Multi-signal URL safety scanner. Combines a real-time malware/phishing URL
+  feed (URLhaus) with native DNS, TLS certificate, and redirect-chain
+  analysis to produce a deterministic safe/suspicious/malicious verdict.
+  No single upstream provider's downtime fully blocks a verdict.
+
+base_url: https://REPLACE_WITH_REAL_DEPLOYMENT_DOMAIN
+
+auth:
+  type: none
+
+rate_limit_per_sec: 5
+cache_ttl_sec: 0
+circuit_threshold: 5
+circuit_cooldown_seconds: 30
+
+endpoints:
+  - path: /scan
+    external_path: /scan
+    method: POST
+    description: >
+      Scan a URL and return a safe/suspicious/malicious verdict with
+      confidence and reasoning.
+
+input_schema:
+  type: object
+  required: [url]
+  properties:
+    url:
+      type: string
+      description: The URL to analyze.
+
+output_schema:
+  type: object
+  properties:
+    verdict:
+      type: string
+      description: One of "safe", "suspicious", "malicious", or "unknown".
+    confidence:
+      type: number
+      description: 0.0-1.0 confidence in the verdict.
+    reason:
+      type: string
+      description: Short human-readable explanation of the evidence used.
+
+semantics:
+  signal_mapping:
+    label_field: verdict
+    confidence_field: confidence
+    reason_field: reason
+  supported_intents:
+    - URL_SCAN
